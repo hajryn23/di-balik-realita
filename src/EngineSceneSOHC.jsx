@@ -64,7 +64,7 @@ function EngineModel({ crankDeg }) {
   const rodRise = Math.sqrt(ROD_L * ROD_L - crankX * crankX);
   const wristY = crankPinY + rodRise;
   const pistonY = wristY - 0.19;
-  const rodAngle = Math.atan2(crankX, rodRise);
+  const rodAngle = Math.atan2(-crankX, rodRise);
 
   const intakeLift = eventLift(crankDeg, 710, 220);
   const exhaustLift = eventLift(crankDeg, 490, 730);
