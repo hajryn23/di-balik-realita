@@ -18,10 +18,13 @@ const smooth = (v) => {
 // Valve events are specified in crank degrees for a 720-degree cycle.
 // Intake: opens 10° BTDC overlap, closes 40° ABDC.
 // Exhaust: opens 50° BBDC, closes 10° ATDC overlap.
-function eventLift(crankDeg, open, close, maxLift = 0.115) {
-  const a = ((crankDeg % 720) + 720) % 720;
-  const span = close > open ? close - open : close + 720 - open;
-  const p = ((a - open + 720) % 720) / span;
+function camProfileLift(camAngleDeg, openCrankDeg, closeCrankDeg, maxLift = 0.115) {
+  // Cam angle is half crank angle: derive valve event position from camshaft rotation.
+  const open = openCrankDeg / 2;
+  const close = closeCrankDeg / 2;
+  const a = ((camAngleDeg % 360) + 360) % 360;
+  const span = close > open ? close - open : close + 360 - open;
+  const p = ((a - open + 360) % 360) / span;
   if (p > 1) return 0;
   // Rounded cam ramps with a broad nose; zero lift at both ramps.
   const ramp = 0.16;
@@ -66,12 +69,14 @@ function EngineModel({ crankDeg }) {
   const pistonY = wristY - 0.19;
   const rodAngle = Math.atan2(-crankX, rodRise);
 
-  const intakeLift = eventLift(crankDeg, 710, 220);
-  const exhaustLift = eventLift(crankDeg, 490, 730);
-  const camDeg = (crankDeg / 2) * DEG;
+  const camAngleDeg = crankDeg / 2;
+  const intakeLift = camProfileLift(camAngleDeg, 710, 220);
+  const exhaustLift = camProfileLift(camAngleDeg, 490, 730);
+  const camDeg = camAngleDeg * DEG;
 
-  // Rocker angular displacement is derived from valve lift. The rocker,
-  // valve and spring therefore move as one kinematic chain.
+  // Rocker angular displacement is derived from the rotating cam profile's
+  // timing function. This is a phase-linked kinematic approximation, not
+  // a collision/contact solver between the cam and rocker surfaces.
   const rockerAngleIn = -intakeLift * 1.7;
   const rockerAngleEx = exhaustLift * 1.7;
 
@@ -265,8 +270,9 @@ export default function EngineSceneSOHC() {
   const crankDeg = (frameInCycle / CYCLE_FRAMES) * 720;
   const phase = crankDeg < 180 ? 0 : crankDeg < 360 ? 1 : crankDeg < 540 ? 2 : 3;
   const names = ["HISAP", "KOMPRESI", "USAHA", "BUANG"];
-  const intake = eventLift(crankDeg, 710, 220);
-  const exhaust = eventLift(crankDeg, 490, 730);
+  const camAngleDeg = crankDeg / 2;
+  const intake = camProfileLift(camAngleDeg, 710, 220);
+  const exhaust = camProfileLift(camAngleDeg, 490, 730);
   const spark = crankDeg >= 350 && crankDeg <= 358;
 
   return (
