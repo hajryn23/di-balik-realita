@@ -183,3 +183,27 @@ footer {
     padding: 10px;
   }
 }
+
+
+.visual-caption small {
+  display: block;
+  margin-top: 5px;
+  color: #9caab5;
+  font-size: 9px;
+  letter-spacing: 0.2px;
+}
+
+.visual-note {
+  padding: 7px 18px 10px;
+  color: #8796a1;
+  font-size: 9px;
+  line-height: 1.4;
+  border-top: 1px solid #26343e;
+}
+
+@media (max-width: 600px) {
+  .visual-note {
+    padding: 7px 10px 9px;
+    font-size: 8px;
+  }
+}

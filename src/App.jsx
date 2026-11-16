@@ -1,6 +1,6 @@
 import React from "react";
 import { Player } from "@remotion/player";
-import EngineSceneThree from "./EngineSceneThree.jsx";
+import EngineSceneSOHC from "./EngineSceneRebuilt.jsx";
 
 export default function App() {
   return (
@@ -12,17 +12,18 @@ export default function App() {
       </header>
 
       <section className="intro">
-        <div className="chapter">PROTOTIPE VISUAL 01</div>
+        <div className="chapter">PROTOTIPE VISUAL 01 · REVISI MEKANIS</div>
         <h2>Apa yang Terjadi di Dalam Mesin Motor?</h2>
         <p>
-          Simulasi mekanisme mesin satu silinder, empat langkah,
-          dengan gerakan piston dan poros engkol.
+          Model potongan mesin satu silinder 4-langkah SOHC 2-katup:
+          piston, poros engkol, batang piston, noken as, rocker arm,
+          pegas katup, serta jalur masuk dan buang.
         </p>
       </section>
 
       <section className="player-shell">
         <Player
-          component={EngineSceneThree}
+          component={EngineSceneSOHC}
           durationInFrames={240}
           compositionWidth={1280}
           compositionHeight={720}
@@ -34,8 +35,8 @@ export default function App() {
       </section>
 
       <footer>
-        <span>MODEL ILUSTRATIF — BUKAN REPLIKA MESIN MEREK TERTENTU</span>
-        <span>30 FPS · 720° SIKLUS EMPAT LANGKAH</span>
+        <span>MODEL KINEMATIKA ILUSTRATIF — BUKAN REPLIKA MEREK TERTENTU</span>
+        <span>30 FPS · POROS ENGKOL 720° · NOKKEN AS 360°</span>
       </footer>
     </main>
   );
