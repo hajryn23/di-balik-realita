@@ -1,6 +1,6 @@
 import React from "react";
 import { Player } from "@remotion/player";
-import EngineSceneSOHC from "./EngineSceneSOHC.jsx";
+import EngineSceneSOHC from "./EngineSceneRebuilt.jsx";
 
 export default function App() {
   return (
