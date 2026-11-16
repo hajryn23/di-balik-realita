@@ -73,6 +73,7 @@ function CamLobe({ x, angle, z = 0.12 }) {
 }
 
 function EngineModel({ crankDegrees }) {
+  const crankRadians = crankDegrees * DEG;
   const { crankX, crankY, pistonY } = sliderCrank(crankDegrees);
   const camDegrees = crankDegrees / 2;
   const camRadians = camDegrees * DEG;
@@ -143,16 +144,16 @@ function EngineModel({ crankDegrees }) {
 
       {/* Crank webs and main shaft, with the crankpin at the slider-crank position. */}
       {[-0.27, 0.27].map((z) => (
-        <group key={z}>
-          <mesh position={[0, CRANK_Y, z]}>
+        <group key={z} position={[0, CRANK_Y, z]} rotation={[0, 0, -crankRadians]}>
+          <mesh rotation={[Math.PI / 2, 0, 0]}>
             <cylinderGeometry args={[0.31, 0.31, 0.105, 48]} />
             <meshStandardMaterial color="#53636d" metalness={0.88} roughness={0.25} />
           </mesh>
-          <mesh position={[crankX * 0.5, CRANK_Y + (crankY - CRANK_Y) * 0.5, z]}>
-            <boxGeometry args={[0.22, 0.42, 0.11]} />
+          <mesh position={[0, CRANK_RADIUS * 0.5, 0]}>
+            <boxGeometry args={[0.22, CRANK_RADIUS, 0.11]} />
             <meshStandardMaterial color="#53636d" metalness={0.88} roughness={0.25} />
           </mesh>
-          <mesh position={[crankX, crankY, z]}>
+          <mesh position={[0, CRANK_RADIUS, 0]} rotation={[Math.PI / 2, 0, 0]}>
             <cylinderGeometry args={[0.115, 0.115, 0.12, 32]} />
             <meshStandardMaterial color="#c6a66b" metalness={0.9} roughness={0.2} />
           </mesh>
